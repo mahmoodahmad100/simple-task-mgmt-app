@@ -1,6 +1,6 @@
 import { BACKEND_BASE_URL } from "@/lib/constants";
 import { readErrorMessage } from "@/lib/http";
-import type { ActivityLog, Task, TaskResponse, TasksResponse } from "@/types/api";
+import type { ActivityLog, Task, TaskResponse, TasksResponse, TasksSummary } from "@/types/api";
 
 function buildBackendUrl(path: string): string {
   return `${BACKEND_BASE_URL}${path}`;
@@ -37,6 +37,11 @@ export async function updateTaskInBackend(taskId: string, completed: boolean): P
 
   const body = (await response.json()) as TaskResponse;
   return body.data;
+}
+
+export async function getTasksSummaryFromBackend(): Promise<TasksSummary> {
+  const response = await fetchBackend("/reports/tasks-summary");
+  return (await response.json()) as TasksSummary;
 }
 
 export async function getActivityFromBackend(): Promise<ActivityLog[]> {
