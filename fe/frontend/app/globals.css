@@ -85,3 +85,60 @@ main {
   display: grid;
   gap: 1rem;
 }
+
+.panel {
+  padding: 1rem;
+}
+
+.page-title {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.muted {
+  margin: 0;
+  color: var(--muted);
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.field span {
+  font-size: 0.9rem;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.item {
+  padding: 0.85rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.item-title,
+.item-body {
+  margin: 0;
+}
+
+.item-title {
+  font-weight: 600;
+}
+
+.error-panel {
+  border-color: #e3b4c0;
+  background: #fff8fa;
+}
+
+.error-text {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  color: var(--danger);
+}
