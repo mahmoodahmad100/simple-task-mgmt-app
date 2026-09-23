@@ -1,0 +1,29 @@
+---
+description: Constraints for reviewing, refactoring, and extending the task management frontend
+alwaysApply: true
+---
+
+# Task Management Frontend
+
+Work in `frontend` (Next.js App Router, TypeScript). Route handlers in `app/api/*` proxy the backend. Endpoint docs live in `frontend/docs/backend-endpoints.md`. Backend setup is in `backend/README.md`.
+
+## Review
+
+Write findings in `REVIEW.md`. Group them as Performance, Maintainability, UX, Code quality, and React best practices. For each issue state what is wrong, why it matters, and a suggested improvement.
+
+## Refactor
+
+Improve the Task Dashboard and Activity Feed in place. Keep current behavior. Prefer small, reusable changes over a rewrite.
+
+```tsx
+// ❌ BAD — replace a working module with a new architecture
+// ✅ GOOD — extract a shared status badge and keep the existing data flow
+```
+
+## Reports
+
+Add `/reports` that shows total tasks, tasks grouped by status, and recent activity count. Fetch the Reports API. Include loading and error states. Keep the layout simple and the components reusable.
+
+## UI
+
+Replace the basic page styling with a clear, consistent visual design across Dashboard, Activity, and Reports.
