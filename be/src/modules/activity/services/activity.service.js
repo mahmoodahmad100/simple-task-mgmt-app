@@ -1,54 +1,60 @@
-const fs = require('node:fs');
 const path = require('node:path');
 
-const fp = path.join(process.cwd(), 'data', 'activity.json');
+const { createId } = require('../../../utils/id');
+const { readJsonArray, updateJsonArray } = require('../../../utils/jsonStore');
+const HttpError = require('../../../utils/httpError');
 
-function loadDataA() {
-  if (!fs.existsSync(fp)) {
-    fs.writeFileSync(fp, '[]');
+const ACTIVITY_FILE_PATH = path.join(process.cwd(), 'data', 'activity.json');
+
+function normalizeActivityPayload(body) {
+  const payload = body === undefined || body === null ? {} : body;
+
+  if (typeof payload !== 'object' || Array.isArray(payload)) {
+    throw new HttpError(400, 'Body must be a JSON object.');
   }
 
-  let raw = fs.readFileSync(fp, 'utf8');
-  if (!raw) {
-    raw = '[]';
+  const fields = {};
+
+  if (Object.hasOwn(payload, 'action')) {
+    if (typeof payload.action !== 'string') {
+      throw new HttpError(400, '"action" must be a string.');
+    }
+
+    fields.action = payload.action;
   }
 
-  return JSON.parse(raw);
+  if (Object.hasOwn(payload, 'info')) {
+    if (typeof payload.info !== 'string') {
+      throw new HttpError(400, '"info" must be a string.');
+    }
+
+    fields.info = payload.info;
+  }
+
+  return fields;
 }
 
-function loadDataB() {
-  if (!fs.existsSync(fp)) {
-    fs.writeFileSync(fp, '[]');
-  }
-
-  let raw = fs.readFileSync(fp, 'utf8');
-  if (!raw) {
-    raw = '[]';
-  }
-
-  return JSON.parse(raw);
+async function getAllActivity() {
+  return readJsonArray(ACTIVITY_FILE_PATH);
 }
 
-function getAllActivity() {
-  const arr = loadDataA();
-  return arr;
-}
-
-function createNewActivity(b) {
-  const list = loadDataB();
-  const one = {
-    id: String(Date.now()),
-    action: b.action,
-    info: b.info,
+async function createActivity(body) {
+  const fields = normalizeActivityPayload(body);
+  const entry = {
+    id: createId(),
+    ...fields,
     when: new Date().toISOString(),
   };
 
-  list.push(one);
-  fs.writeFileSync(fp, JSON.stringify(list, null, 2));
-  return one;
+  await updateJsonArray(ACTIVITY_FILE_PATH, (activity) => {
+    activity.push(entry);
+    return activity;
+  });
+
+  return entry;
 }
 
 module.exports = {
   getAllActivity,
-  createNewActivity,
+  createActivity,
 };
