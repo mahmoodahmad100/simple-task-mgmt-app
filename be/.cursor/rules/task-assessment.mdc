@@ -1,0 +1,35 @@
+---
+description: Constraints for reviewing, refactoring, and extending the task management backend
+alwaysApply: true
+---
+
+# Task Management Backend
+
+Work in this Express app. Modules live under `src/modules/` (tasks, activity). Data is local JSON in `data/` via `src/utils/jsonStore.js`. Treat the code as already in production.
+
+## Review
+
+Write findings in `REVIEW.md`. Group them as Bugs, Performance, Maintainability, Security, and Code quality. For each issue state what is wrong, why it is a problem, and how to improve it.
+
+## Refactor
+
+Improve the Tasks API and Activity Log API in place. Keep current behavior. Prefer small, safe changes over a rewrite.
+
+```js
+// ❌ BAD — replace tasks.service.js with a new data layer
+// ✅ GOOD — fix the bug in the existing service and keep the JSON store
+```
+
+## Reports
+
+Add `GET /reports/tasks-summary`. Read `data/tasks.json` and `data/activity.json`, aggregate, and return:
+
+```json
+{
+  "total": 20,
+  "byStatus": { "todo": 5, "in-progress": 10, "done": 5 },
+  "recentActivityCount": 12
+}
+```
+
+Follow the existing module layout: routes, controller, service. Stay on JSON files only.
