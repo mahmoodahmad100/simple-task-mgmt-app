@@ -1,9 +1,9 @@
 import type { TasksSummary } from "@/types/api";
 
-const STATUSES: Array<{ key: keyof TasksSummary["byStatus"]; label: string }> = [
-  { key: "todo", label: "To do" },
-  { key: "in-progress", label: "In progress" },
-  { key: "done", label: "Done" },
+const STATUSES: Array<{ key: keyof TasksSummary["byStatus"]; label: string; tone: string }> = [
+  { key: "todo", label: "To do", tone: "todo" },
+  { key: "in-progress", label: "In progress", tone: "progress" },
+  { key: "done", label: "Done", tone: "done" },
 ];
 
 type StatusBreakdownProps = {
@@ -18,7 +18,7 @@ export function StatusBreakdown({ byStatus }: StatusBreakdownProps) {
         {STATUSES.map((status) => (
           <li key={status.key} className="status-row">
             <span>{status.label}</span>
-            <span className="badge">{byStatus[status.key]}</span>
+            <span className={`badge ${status.tone}`}>{byStatus[status.key]}</span>
           </li>
         ))}
       </ul>

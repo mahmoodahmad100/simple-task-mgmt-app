@@ -9,8 +9,9 @@ export function ActivityFeed() {
 
   return (
     <section className="stack">
-      <header className="card panel">
+      <header className="card panel page-header">
         <h1 className="page-title">Activity Feed</h1>
+        <p className="muted">Search the log by action or detail.</p>
         <ActivitySearch value={query} onChange={setQuery} />
       </header>
 

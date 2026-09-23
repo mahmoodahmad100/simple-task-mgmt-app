@@ -27,8 +27,9 @@ export function TaskDashboard() {
 
   return (
     <section className="stack">
-      <header className="card panel">
+      <header className="card panel page-header">
         <h1 className="page-title">Task Dashboard</h1>
+        <p className="muted">Filter work by status and mark tasks complete or pending.</p>
       </header>
 
       <StatusFilter value={filter} onChange={setFilter} />

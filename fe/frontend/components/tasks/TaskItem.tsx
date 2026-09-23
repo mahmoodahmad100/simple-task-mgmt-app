@@ -12,7 +12,9 @@ export function TaskItem({ task, busy, onToggle }: TaskItemProps) {
     <li className="card item">
       <div className="item-row">
         <p className="item-title">{task.title}</p>
-        <span className="badge">{task.completed ? "Completed" : "Pending"}</span>
+        <span className={task.completed ? "badge done" : "badge todo"}>
+          {task.completed ? "Completed" : "Pending"}
+        </span>
       </div>
 
       <small className="muted">Updated: {formatTimestamp(task.updatedAt)}</small>

@@ -9,7 +9,7 @@ export function ReportsSummary() {
 
   return (
     <section className="stack">
-      <header className="card panel">
+      <header className="card panel page-header">
         <h1 className="page-title">Reports</h1>
         <p className="muted">Task totals, status counts, and recent activity.</p>
       </header>
