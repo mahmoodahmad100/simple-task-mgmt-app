@@ -1,36 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { ErrorResponse, Task, TaskFilter, TaskResponse, TasksResponse } from "@/types/api";
-
-function getErrorMessage(error: unknown, fallback: string): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  return fallback;
-}
-
-async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, {
-    ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...(init?.headers || {}),
-    },
-  });
-
-  if (!response.ok) {
-    try {
-      const body = (await response.json()) as ErrorResponse;
-      throw new Error(body.error?.message || `Request failed with ${response.status}`);
-    } catch (error) {
-      throw new Error(getErrorMessage(error, `Request failed with ${response.status}`));
-    }
-  }
-
-  return (await response.json()) as T;
-}
+import { getErrorMessage, requestJson } from "@/lib/http";
+import type { Task, TaskFilter, TaskResponse, TasksResponse } from "@/types/api";
 
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -49,8 +21,8 @@ export function useTasks() {
       });
 
       setTasks(body.data);
-    } catch (error) {
-      setError(getErrorMessage(error, "Could not load tasks right now."));
+    } catch (err) {
+      setError(getErrorMessage(err, "Could not load tasks right now."));
     } finally {
       setLoading(false);
     }
@@ -66,11 +38,9 @@ export function useTasks() {
         body: JSON.stringify({ completed }),
       });
 
-      setTasks((previous) =>
-        previous.map((task) => (task.id === taskId ? body.data : task))
-      );
-    } catch (error) {
-      setError(getErrorMessage(error, "Could not update task status."));
+      setTasks((previous) => previous.map((task) => (task.id === taskId ? body.data : task)));
+    } catch (err) {
+      setError(getErrorMessage(err, "Could not update task status."));
     } finally {
       setUpdatingTaskId("");
     }

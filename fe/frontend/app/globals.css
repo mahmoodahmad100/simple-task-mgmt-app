@@ -132,6 +132,19 @@ main {
   font-weight: 600;
 }
 
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: start;
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .error-panel {
   border-color: #e3b4c0;
   background: #fff8fa;

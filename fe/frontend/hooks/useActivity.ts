@@ -1,26 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { ActivityLog, ErrorResponse } from "@/types/api";
-
-function getErrorMessage(error: unknown, fallback: string): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  return fallback;
-}
-
-async function readErrorMessage(response: Response): Promise<string> {
-  const fallback = `Request failed with status ${response.status}`;
-
-  try {
-    const body = (await response.json()) as ErrorResponse;
-    return body.error?.message || fallback;
-  } catch {
-    return fallback;
-  }
-}
+import { getErrorMessage, requestJson } from "@/lib/http";
+import type { ActivityLog } from "@/types/api";
 
 export function useActivity() {
   const [logs, setLogs] = useState<ActivityLog[]>([]);
@@ -33,14 +15,13 @@ export function useActivity() {
       setLoading(true);
       setError("");
 
-      const response = await fetch("/api/activity");
+      const data = await requestJson<unknown>("/api/activity");
 
-      if (!response.ok) {
-        throw new Error(await readErrorMessage(response));
+      if (!Array.isArray(data)) {
+        throw new Error("Activity response was not a list.");
       }
 
-      const data = (await response.json()) as unknown;
-      setLogs(Array.isArray(data) ? (data as ActivityLog[]) : []);
+      setLogs(data as ActivityLog[]);
     } catch (err) {
       setLogs([]);
       setError(getErrorMessage(err, "Could not load activity right now."));

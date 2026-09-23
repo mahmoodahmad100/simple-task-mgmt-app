@@ -1,3 +1,4 @@
+import { formatTimestamp } from "@/lib/format";
 import type { Task } from "@/types/api";
 
 type TaskItemProps = {
@@ -8,22 +9,13 @@ type TaskItemProps = {
 
 export function TaskItem({ task, busy, onToggle }: TaskItemProps) {
   return (
-    <li
-      className="card"
-      style={{
-        padding: "0.85rem",
-        display: "grid",
-        gap: "0.4rem",
-      }}
-    >
-      <div style={{ display: "flex", justifyContent: "space-between", gap: "0.8rem", alignItems: "start" }}>
-        <p style={{ margin: 0, fontWeight: 600 }}>{task.title}</p>
+    <li className="card item">
+      <div className="item-row">
+        <p className="item-title">{task.title}</p>
         <span className="badge">{task.completed ? "Completed" : "Pending"}</span>
       </div>
 
-      <small style={{ color: "var(--muted)" }}>
-        Updated: {new Date(task.updatedAt).toLocaleString()}
-      </small>
+      <small className="muted">Updated: {formatTimestamp(task.updatedAt)}</small>
 
       <div>
         <button
