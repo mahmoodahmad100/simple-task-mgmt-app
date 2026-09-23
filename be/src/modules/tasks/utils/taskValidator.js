@@ -80,6 +80,10 @@ function validateUpdateTask(payload) {
     throw new HttpError(400, 'Provide at least one updatable field.');
   }
 
+  if (Object.hasOwn(normalized, 'title') && normalized.title.length < 2) {
+    throw new HttpError(400, 'Title is too short.');
+  }
+
   return normalized;
 }
 
